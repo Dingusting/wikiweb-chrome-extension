@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 350px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fafaf9;
+      color: #1c1917;
+    }
+    .container {
+      padding: 16px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #ffffff;
+      border-bottom: 1px solid #e7e5e4;
+    }
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: #7c3aed;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.3);
+    }
+    .title-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #1e1b4b;
+      margin: 0;
+    }
+    .subtitle {
+      font-size: 10px;
+      color: #7c3aed;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .tabs {
+      display: flex;
+      background: #f1f0ee;
+      padding: 3px;
+      border-radius: 8px;
+      margin: 14px 16px 8px 16px;
+    }
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 6px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #78716c;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #ffffff;
+      color: #7c3aed;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e7e5e4;
+      padding: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      margin-bottom: 12px;
+    }
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 22px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #d6d3d1;
+      transition: .3s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #7c3aed; }
+    input:checked + .slider:before { transform: translateX(18px); }
+    
+    .label-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #44403c;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .textbox {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #e7e5e4;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 11px;
+      resize: none;
+      font-family: inherit;
+      background: #fafaf9;
+    }
+    .textbox:focus {
+      outline: 1px solid #7c3aed;
+      background: #ffffff;
+    }
+    .btn-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .btn {
+      flex: 1;
+      background: #1c1917;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 11px;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #44403c; }
+    .btn.accent {
+      background: #7c3aed;
+    }
+    .btn.accent:hover {
+      background: #6d28d9;
+    }
+    .btn.green {
+      background: #10b981;
+    }
+    .btn.green:hover {
+      background: #059669;
+    }
+    .badge {
+      font-size: 10px;
+      background: #f1f0ee;
+      padding: 2px 6px;
+      border-radius: 12px;
+      color: #44403c;
+      font-weight: 600;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      margin: 4px 0;
+      color: #57534e;
+    }
+    .comment-item {
+      padding: 10px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      font-size: 11px;
+      margin-bottom: 8px;
+      color: #14532d;
+    }
+    .comment-item-title {
+      font-weight: 700;
+      font-size: 9px;
+      color: #166534;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 24px 8px;
+      color: #a8a29e;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">W</div>
+    <div class="title-group">
+      <h1 class="title">WikiWeb Engine</h1>
+      <span class="subtitle">Live Workspace Synchronizer</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="tab-config">⚙️ Controller</button>
+    <button class="tab-btn" data-tab="tab-ai">🤖 AI Lab & TTS</button>
+    <button class="tab-btn" data-tab="tab-comments">💬 Comments</button>
+  </div>
+
+  <div class="container">
+    <!-- TAB 1: CONTROLLER CONFIG -->
+    <div id="tab-config" class="section active">
+      <div class="card" style="margin-bottom: 8px;">
+        <div class="toggle-row">
+          <div>
+            <span style="font-size: 12px; font-weight: 700; color: #1c1917;">Injected Web Overlay</span>
+            <div style="font-size: 10px; color: #78716c; margin-top: 2px;">Enable hover editor on pages</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="layerToggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 12px;">
+        <div class="toggle-row">
+          <div>
+            <span style="font-size: 12px; font-weight: 700; color: #1c1917;">Always-Visible Icon</span>
+            <div style="font-size: 10px; color: #78716c; margin-top: 2px;">Show shortcut overlay menu on page</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="floatingToggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card" style="background: #fcfbfb;">
+        <span class="label-title">Consensus Live Stream State</span>
+        <div class="stat-row">
+          <span>Active Sync Workspace:</span>
+          <span style="font-weight: bold; color: #7c3aed;">personal-sandbox</span>
+        </div>
+        <div class="stat-row">
+          <span>Local Edits registered:</span>
+          <span id="statEdits" style="font-weight: bold; color: #1c1917; font-family: monospace;">0 edits</span>
+        </div>
+        <div class="stat-row">
+          <span>Peer Review comments:</span>
+          <span id="statComments" style="font-weight: bold; color: #10b981; font-family: monospace;">0 bubbles</span>
+        </div>
+      </div>
+
+      <button class="btn accent" style="width: 100%;" id="syncBtn">Pull New Global Default Edits</button>
+      <div style="font-size: 9px; text-align: center; color: #a8a29e; margin-top: 10px; font-family: monospace;">
+        Verified Sync Gateway: Active on Port 3000
+      </div>
+    </div>
+
+    <!-- TAB 2: PORTABLE AI / TTS LAB -->
+    <div id="tab-ai" class="section">
+      <div class="card">
+        <span class="label-title">Portable AI Enhancer Sandbox</span>
+        <textarea id="ai-lab-input" rows="3" class="textbox" placeholder="Paste or write words from webpage context here..."></textarea>
+        
+        <div style="margin-top: 8px;">
+          <label class="label-title" style="margin-bottom: 4px;">Choose Optimize Objective:</label>
+          <select id="ai-lab-action" style="width: 100%; border: 1px solid #e7e5e4; border-radius: 6px; padding: 5px; font-size: 11px; background: white; font-family: inherit;">
+            <option value="simplify">Simplify text formulation</option>
+            <option value="professional">Enhance standard vocabulary</option>
+            <option value="explain">Explain historical context</option>
+            <option value="translate-es">Translate to Spanish</option>
+            <option value="translate-fr">Translate to French</option>
+          </select>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn accent" id="ai-lab-enhance-btn">🤖 Ask AI</button>
+          <button class="btn green" id="ai-lab-speak-btn">🔊 Speak prose</button>
+        </div>
+      </div>
+
+      <div class="card" id="ai-lab-result-card" style="display: none; background: #fafaf9; border-left: 3px solid #7c3aed;">
+        <span class="label-title" style="color: #7c3aed; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <span>AI Refined Synthesis:</span>
+          <button id="ai-copy-btn" style="background: none; border: none; cursor: pointer; color: #7c3aed; font-weight: bold; font-size: 10px; padding: 2px;">[Copy]</button>
+        </span>
+        <p id="ai-lab-output" style="font-size: 11px; line-height: 1.4; margin: 0; color: #44403c; font-style: italic;"></p>
+      </div>
+    </div>
+
+    <!-- TAB 3: COMMENTS STREAM -->
+    <div id="tab-comments" class="section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span class="label-title" style="margin: 0;">Active Web Bubble Comments</span>
+        <button id="clearCommentsBtn" style="background: none; border: none; font-size: 10px; color: #ef4444; font-weight: bold; cursor: pointer; padding: 2px;">Clear All</button>
+      </div>
+      <div id="comments-list-container" style="max-height: 220px; overflow-y: auto;">
+        <!-- Dynamic comments list injections -->
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
