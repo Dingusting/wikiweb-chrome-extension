@@ -43,6 +43,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 document.addEventListener("mouseover", (event) => {
   if (!activeOverlayEnabled) return;
   const target = event.target;
+  if (!target || !target.tagName) return;
+
+  // Ignore interactions on the WikiWeb Extension UI elements
+  if (
+    target.closest && (
+      target.closest("#wikiweb-extension-editor") ||
+      target.closest("#wikiweb-persistent-fab-wrapper") ||
+      target.closest("[id^='wikiweb-']") ||
+      target.closest("[class*='wikiweb']")
+    )
+  ) {
+    return;
+  }
+
   // Select typical readable text tags
   if (["P", "H1", "H2", "H3", "H4", "H5", "H6", "SPAN", "FIGCAPTION"].includes(target.tagName)) {
     target.style.outline = "2px dashed #8b5cf6";
@@ -54,6 +68,20 @@ document.addEventListener("mouseover", (event) => {
 document.addEventListener("mouseout", (event) => {
   if (!activeOverlayEnabled) return;
   const target = event.target;
+  if (!target || !target.tagName) return;
+
+  // Ignore interactions on the WikiWeb Extension UI elements
+  if (
+    target.closest && (
+      target.closest("#wikiweb-extension-editor") ||
+      target.closest("#wikiweb-persistent-fab-wrapper") ||
+      target.closest("[id^='wikiweb-']") ||
+      target.closest("[class*='wikiweb']")
+    )
+  ) {
+    return;
+  }
+
   if (["P", "H1", "H2", "H3", "H4", "H5", "H6", "SPAN", "FIGCAPTION"].includes(target.tagName)) {
     target.style.outline = "";
   }
@@ -62,10 +90,21 @@ document.addEventListener("mouseout", (event) => {
 document.addEventListener("click", (event) => {
   if (!activeOverlayEnabled) return;
   const target = event.target;
+  if (!target || !target.tagName) return;
+
+  // Intercept and skip clicking inside any WikiWeb extension UI element
+  if (
+    target.closest && (
+      target.closest("#wikiweb-extension-editor") ||
+      target.closest("#wikiweb-persistent-fab-wrapper") ||
+      target.closest("[id^='wikiweb-']") ||
+      target.closest("[class*='wikiweb']")
+    )
+  ) {
+    return;
+  }
+
   if (["P", "H1", "H2", "H3", "H4", "H5", "H6", "SPAN", "FIGCAPTION"].includes(target.tagName)) {
-    // Skip if clicking inside our own editor UI
-    if (event.target.closest("#wikiweb-extension-editor")) return;
-    
     event.preventDefault();
     event.stopPropagation();
     
